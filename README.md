@@ -1,6 +1,6 @@
-# PDF SCRAPER
+# PDF Scraper
 
-This is a pdf scraper built using javascript in next.js as part of a spike. Currently, the pdf is scanned and the data is printed to the console with no formatting
+This is a PDF scraper built using Javascript in Next.js as part of a larger project spike. Currently, the PDF is scanned from local storage and the data is printed to the console with no formatting.
 
 Next steps:
 

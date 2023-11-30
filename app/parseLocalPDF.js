@@ -1,14 +1,13 @@
 const fs = require('fs');
 const pdf = require('pdf-parse');
-const XLSX = require('xlsx');
 
 async function parseLocalPDF(pdfPath) {
   const dataBuffer = fs.readFileSync(pdfPath);
   const data = await pdf(dataBuffer);
 
   const structuredData = parsePDFText(data.text);
-  const excelData = createExcelData(structuredData);
-  exportToExcel(excelData, 'output.xlsx');
+  console.log("STRUCTURE DATA", structuredData)
+
 }
 
 function parsePDFText(pdfText) {
@@ -37,16 +36,7 @@ function isValue(line) {
 }
 
 
-function createExcelData(data) {
-  return [data]; // Wrapping the single object in an array to create a single row
-}
 
-function exportToExcel(data, fileName) {
-  const worksheet = XLSX.utils.json_to_sheet(data);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-  XLSX.writeFile(workbook, fileName);
-}
 
 // Replace with your actual PDF path
 const pdfPath = '/Users/eazzopardi/code/pdf-to-db/sample report card.pdf';

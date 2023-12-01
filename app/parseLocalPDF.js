@@ -19,60 +19,24 @@ async function parseLocalPDF(pdfPath) {
 
 function parsePDFText(pdfText) {  
   const words = pdfText.split('\n');
-  const splitwords = []
-  words.forEach(word => {
-    if (/[a-z][A-Z]/.test(word)){
-    word = word.replace(/([a-z])([A-Z])/g, '$1 $2')
-    }
-    splitwords.push(word)
-  })
-  console.log("SPLIT WORDS", splitwords)
   
-
   arr = ['State', 'District', 'Block', 'Rural / Urban', 'Cluster', 'Ward', 'Pincode', 'Panchayat']
     
 
-  for (let i = 0; i < splitwords.length; i++) {
-    if (arr.some(word => splitwords.includes(word)) && !arr.some(a => splitwords[i + 1] && splitwords[i + 1].includes(a))) {
-      console.log(splitwords[i] + ': ' + splitwords[i+1])
-       // Break here, after checking the condition
+  for (let i = 0; i < words.length; i++) {
+    // check that words[i] matches a word in arr - words[i] concatenates some words so it is possible that the word in arr is a substring of a word in words
+    (arr.some(word => {
+      words.includes(word)
+      console.log(word)
     }
-  }
-  // for (let i = 0; i < words.length; i++) {
-  //   if (words[i] == 'District') {
-  //     if (words[i + 1] != 'Block') {
-  //       console.log('District: ' + words[i + 1]);
-  //     } else {
-  //       console.log('no response');
-  //     }
-  //     break; // Break here, after checking the condition
-  //   }
-  // }
-  // for (let i = 0; i < words.length; i++) {
-  //   if (words[i] == 'Block') {
-  //     if (words[i + 1] != 'Rural / Urban') {
-  //       console.log('Block: ' + words[i + 1]);
-  //     } else {
-  //       console.log('no response');
-  //     }
-  //     break; // Break here, after checking the condition
-  //   }
-  // }
-  ////
-  // for (let i = 0; i < words.length; i++) {
-  //   if (words[i] == 'MohallaPincode') {
-  //     if (words[i + 1] != 'Pincode') {
-  //       console.log('Mohalla: ' + words[i + 1]);
-  //     } else {
-  //       console.log('no response');
-  //     }
-  //     break; // Break here, after checking the condition
-  //   }
-//   }
-// }
-// }
-}
+    )) 
 
+
+    // check that the following word, words[i + 1], exists in words but not in arr, that will check it is not a key but is indeed a value
+   
+  
+  }
+}
 
 
 const pdfPath = '/Users/eazzopardi/code/pdf-to-db/sample report card.pdf';

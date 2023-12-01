@@ -3,41 +3,54 @@ const pdf = require('pdf-parse');
 
 async function parseLocalPDF(pdfPath) {
   const dataBuffer = fs.readFileSync(pdfPath);
-  const data = await pdf(dataBuffer);
 
-  const structuredData = parsePDFText(data.text);
-  console.log("STRUCTURE DATA", structuredData)
+  // set page range as an option
+  const options = {
+    max: 1 // limit parsing to the first page only
+  };
+
+  const data = await pdf(dataBuffer, options);
+
+  parsePDFText(data.text);
+  // console.log(data)
 
 }
 
-function parsePDFText(pdfText) {
-  const lines = pdfText.split('\n');
-  const data = {};
-  let lastKey = null;
-
-  lines.forEach(line => {
-    if (isKey(line)) {
-      lastKey = line.trim(); // Update the last key
-      data[lastKey] = null;  // Initialize the key with a null value
-    } else if (isValue(line) && lastKey) {
-      data[lastKey] = line.trim();
+function parsePDFText(pdfText) {  
+  const words = pdfText.split('\n');
+  for (let i = 0; i < words.length; i++) {
+    if (words[i] == 'State') {
+      if (words[i + 1] != 'District') {
+        console.log('State: ' + words[i + 1]);
+      } else {
+        console.log('no response');
+      }
+      break; // Break here, after checking the condition
     }
-  });
-
-  return data;
+  }
+  for (let i = 0; i < words.length; i++) {
+    if (words[i] == 'District') {
+      if (words[i + 1] != 'Block') {
+        console.log('District: ' + words[i + 1]);
+      } else {
+        console.log('no response');
+      }
+      break; // Break here, after checking the condition
+    }
+  }
+  for (let i = 0; i < words.length; i++) {
+    if (words[i] == 'Block') {
+      if (words[i + 1] != 'Rural / Urban') {
+        console.log('Block: ' + words[i + 1]);
+      } else {
+        console.log('no response');
+      }
+      break; // Break here, after checking the condition
+    }
+  }
 }
 
-function isKey(line) {
-  return line.match(/[a-zA-Z]{3,}/); // Matches strings with more than 2 letters
-}
-
-function isValue(line) {
-  return !isNaN(line.trim()) && line.trim() !== ''; // Checks if the line is a number
-}
 
 
-
-
-// Replace with your actual PDF path
 const pdfPath = '/Users/eazzopardi/code/pdf-to-db/sample report card.pdf';
 parseLocalPDF(pdfPath);
